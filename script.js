@@ -50,6 +50,7 @@ function handleRecordsData(records) {
     (a, b) => new Date(b.metadata.createdAt) - new Date(a.metadata.createdAt)
   );
   latestRecord = recordsData[0];
+  numberOfRecord = recordsData.length;
   createRecordsTable(recordsData);
   createListenLatestRecordElement();
 }
@@ -146,6 +147,9 @@ function formatDateTime(isoString) {
 }
 
 function audioPlayingHandler(index, audioSource, duration) {
+  if (isPlayingAudio && currentPlayingIndex !== index) {
+    stopAudio();
+  }
   isPlayingAudio = !isPlayingAudio;
   currentPlayingIndex = index;
   currentAudioDuration = duration;
@@ -166,6 +170,7 @@ function playAudio(index, audioSource) {
 
 function stopAudio() {
   isPlayingAudio = false;
+  isPlayAllAudio = false;
   AUDIO_ELEMENT.pause();
   AUDIO_ELEMENT.src = "";
   removeEventTimeUpdate();
@@ -175,6 +180,8 @@ function stopAudio() {
 function playLatestRecord() {
   if (latestRecord) {
     document.getElementById("duration-1").classList.remove("hidden");
+    document.getElementById("duration-1").textContent =
+      `00:00 - ${formatTimeDuration(latestRecord.metadata.duration)}`;
     document.getElementById("laughterButton").disabled = true;
     currentPlayingIndex = -1;
     audioPlayingHandler(
@@ -186,9 +193,11 @@ function playLatestRecord() {
 }
 
 function allAudioPlayingHandler() {
+  if (isPlayingAudio && !isPlayAllAudio) {
+    stopAudio();
+  }
   isPlayAllAudio = !isPlayAllAudio;
   if (isPlayAllAudio) {
-    stopAudio();
     PLAY_ALL_BUTTON_ELEMENT.textContent = "[Stop All]";
     currentPlayingIndex = 0;
     isPlayAllAudio = true;
@@ -206,7 +215,6 @@ function allAudioPlayingHandler() {
 
 function resetAudioPlayingStatus() {
   isPlayingAudio = false;
-  isPlayAllAudio = false;
   PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
   document.getElementById(`button${currentPlayingIndex}`).textContent =
     "[Play]";
@@ -223,7 +231,7 @@ function playNextAudio() {
       audioPlayingHandler(
         currentPlayingIndex,
         recordsData[currentPlayingIndex].dataHash,
-        recordsData[currentPlayingIndex].duration
+        recordsData[currentPlayingIndex].metadata.duration
       );
     } else {
       isPlayAllAudio = false;

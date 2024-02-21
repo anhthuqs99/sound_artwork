@@ -40,6 +40,7 @@ button {
   color: #000000;
   &:disabled {
     opacity: 0.3;
+    pointer-events: none;
   }
 }
 
@@ -120,4 +121,8 @@ button {
   width: 100%;
   border-bottom: 1px solid #000000;
   padding: var(--rowPadding) 0;
+}
+
+.container >.page .records >tr >td {
+  padding: unset;
 }
