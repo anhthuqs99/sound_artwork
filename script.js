@@ -147,16 +147,23 @@ function formatDateTime(isoString) {
 }
 
 function audioPlayingHandler(index, audioSource, duration) {
-  if (isPlayingAudio && currentPlayingIndex !== index) {
+  console.log(currentPlayingIndex, index);
+  if (currentPlayingIndex !== index) {
     stopAudio();
-  }
-  isPlayingAudio = !isPlayingAudio;
-  currentPlayingIndex = index;
-  currentAudioDuration = duration;
-  if (isPlayingAudio) {
+    currentPlayingIndex = index;
+    currentAudioDuration = duration;
+    isPlayingAudio = true;
     playAudio(index, audioSource);
   } else {
-    stopAudio();
+    isPlayingAudio = !isPlayingAudio;
+    currentPlayingIndex = index;
+    currentAudioDuration = duration;
+    if (isPlayingAudio) {
+      playAudio(index, audioSource);
+    } else {
+      stopAudio();
+      playNextAudio();
+    }
   }
 }
 
@@ -169,8 +176,6 @@ function playAudio(index, audioSource) {
 }
 
 function stopAudio() {
-  isPlayingAudio = false;
-  isPlayAllAudio = false;
   AUDIO_ELEMENT.pause();
   AUDIO_ELEMENT.src = "";
   removeEventTimeUpdate();
@@ -215,7 +220,6 @@ function allAudioPlayingHandler() {
 
 function resetAudioPlayingStatus() {
   isPlayingAudio = false;
-  PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
   document.getElementById(`button${currentPlayingIndex}`).textContent =
     "[Play]";
   document.getElementById(`duration${currentPlayingIndex}`).textContent =

@@ -18,8 +18,8 @@ html, body {
   font-family: 'Trade Gothic', sans-serif;
   margin: unset;
   background: #000000;
-  --maxSize: min(100vh, 100vw, 1500px); /* max size artwork 1200px + margin + padding */
-  --artworkSize: calc(var(--maxSize) - var(--maxSize) * (64 * 2 + 90 * 2) / 1200);
+  --maxSize: min(100vh, 100vw, 1200px * (1200 / (1200 - 64 * 2))); /* max size artwork 1200px included padding */
+  --artworkSize: calc(var(--maxSize) - var(--maxSize) * (64 * 2) / 1200);
   --artworkFontSize: calc(var(--artworkSize) * 36 / 1200);
   --artworkPadding: calc(var(--artworkSize) * 90 / 1200);
   --artworkMargin: calc(var(--artworkSize) * 64 / 1200);
@@ -28,6 +28,10 @@ html, body {
 
 p {
   margin: unset;
+}
+
+div, button, p, span {
+  line-height: 170%;
 }
 
 button {
@@ -75,7 +79,7 @@ button {
 }
 
 .container >.page {
-  width: var(--artworkSize);
+  width: calc(var(--artworkSize) - var(--artworkPadding) * 2);
   padding: var(--artworkPadding);
   margin: var(--artworkMargin);
   aspect-ratio: 1;
@@ -104,7 +108,7 @@ button {
 
 .container .title {
   font-family: 'Gotham Regular';
-  letter-spacing: 6.48px
+  letter-spacing: 6.48px;
 }
 
 .container >.page .records {
@@ -123,6 +127,9 @@ button {
   padding: var(--rowPadding) 0;
 }
 
-.container >.page .records >tr >td {
+.container >.page .records >tr >td,
+.container >.page .records >tr >button {
   padding: unset;
+  height: 100%;
+  line-height: 100%;
 }
