@@ -147,7 +147,6 @@ function formatDateTime(isoString) {
 }
 
 function audioPlayingHandler(index, audioSource, duration) {
-  console.log(currentPlayingIndex, index);
   if (currentPlayingIndex !== index) {
     stopAudio();
     currentPlayingIndex = index;
