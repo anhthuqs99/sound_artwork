@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0x4eA628f2f170B82267D0396BBb51B1A93a775907";
+const SOUND_CONTRACT_ADDRESS = "0x72D35D3C8405C5c1a71DDA497ed2587Fcc75f4e2";
 
 const NETWORKS = {
   mainnet: 1,
@@ -13,21 +13,9 @@ const RPC_ENDPOINT = {
 
 const SOUND_CONTRACT_ABI = [
   {
-    inputs: [
-      { internalType: "address", name: "caller", type: "address" },
-      { internalType: "address", name: "contractAddress", type: "address" },
-      { internalType: "uint256", name: "tokenID", type: "uint256" },
-    ],
-    name: "NotOwner",
-    type: "error",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "dataOwner", type: "address" },
-      { internalType: "address", name: "caller", type: "address" },
-    ],
-    name: "OwnerMismatch",
-    type: "error",
+    inputs: [{ internalType: "address", name: "trustee_", type: "address" }],
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
     anonymous: false,
@@ -104,7 +92,6 @@ const SOUND_CONTRACT_ABI = [
     inputs: [
       { internalType: "address", name: "contractAddress", type: "address" },
       { internalType: "uint256", name: "tokenID", type: "uint256" },
-      { internalType: "bytes", name: "signature", type: "bytes" },
       {
         components: [
           { internalType: "address", name: "owner", type: "address" },
@@ -113,6 +100,18 @@ const SOUND_CONTRACT_ABI = [
         ],
         internalType: "struct OwnerData.Data",
         name: "data",
+        type: "tuple",
+      },
+      {
+        components: [
+          { internalType: "bytes", name: "ownerSign", type: "bytes" },
+          { internalType: "uint256", name: "expiryBlock", type: "uint256" },
+          { internalType: "bytes32", name: "r", type: "bytes32" },
+          { internalType: "bytes32", name: "s", type: "bytes32" },
+          { internalType: "uint8", name: "v", type: "uint8" },
+        ],
+        internalType: "struct OwnerData.Signature",
+        name: "signature",
         type: "tuple",
       },
     ],
