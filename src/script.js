@@ -246,6 +246,8 @@ function playNextAudio() {
 function togglePages() {
   document.getElementById("listen").classList.toggle("hidden");
   document.getElementById("laughter").classList.toggle("hidden");
+  isPlayAllAudio = false;
+  PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
   if (isPlayingAudio) {
     stopAudio();
   }
