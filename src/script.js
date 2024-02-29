@@ -167,7 +167,12 @@ function audioPlayingHandler(index, audioSource, duration) {
 }
 
 function playAudio(index, audioSource) {
-  document.getElementById(`button${index}`).textContent = "[Stop]";
+  const audioHandlerButton = document.getElementById(`button${index}`);
+  audioHandlerButton.textContent = "[Stop]";
+  audioHandlerButton.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+  });
   AUDIO_ELEMENT.src = `${IPFS_PREFIX}${audioSource}`;
   AUDIO_ELEMENT.play();
   console.log("Play audio with src: ", AUDIO_ELEMENT.src);
