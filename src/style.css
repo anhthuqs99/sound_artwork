@@ -18,8 +18,8 @@ html, body {
   font-family: 'Trade Gothic', sans-serif;
   margin: unset;
   background: #000000;
-  --maxSize: min(100vh, 100vw, 1200px * (1200 / (1200 - 64 * 2))); /* max size artwork 1200px included padding */
-  --artworkSize: calc(var(--maxSize) - var(--maxSize) * (64 * 2) / 1200);
+  --maxSize: min(100vh, 100vw, 1200px); /* max size artwork 1200px included padding */
+  --artworkSize: calc(var(--maxSize));
   --artworkFontSize: calc(var(--artworkSize) * 36 / 1200);
   --artworkPadding: calc(var(--artworkSize) * 90 / 1200);
   --artworkMargin: calc(var(--artworkSize) * 64 / 1200);
@@ -80,8 +80,8 @@ button {
 
 .container >.page {
   width: calc(var(--artworkSize) - var(--artworkPadding) * 2);
+  height: calc(var(--artworkSize) - var(--artworkPadding) * 2);
   padding: var(--artworkPadding);
-  margin: var(--artworkMargin);
   aspect-ratio: 1;
   position: relative;
   display: flex;
@@ -108,7 +108,17 @@ button {
 
 .container .title {
   font-family: 'Gotham Regular';
-  letter-spacing: 6.48px;
+  letter-spacing: 2.85px;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.container .title-margin {
+  margin-bottom: calc(var(--artworkPadding) * 77 / 90);
+}
+
+.container .bottom-group {
+  transform: translateY(calc(var(--artworkSize) * 23 / 1200));
 }
 
 .container >.page .records {
