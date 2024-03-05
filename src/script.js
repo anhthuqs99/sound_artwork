@@ -3,9 +3,11 @@ import { setContract, getData } from "./sound.js";
 const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
+const COUNT = 500;
 
 let recordsData = [];
 let numberOfRecord = recordsData.length;
+let startIndex = 0;
 let latestRecord = {};
 let isPlayingAudio = false;
 let isPlayAllAudio = false;
@@ -18,18 +20,36 @@ let currentAudioDuration = 0;
 async function initialize() {
   try {
     const { contractAddress, tokenID, rpcEndpoint } = getQueryParams();
-    let records;
     if (contractAddress && tokenID) {
       await setContract(rpcEndpoint);
-      records = await getData(contractAddress, tokenID);
+      await fetchDataFromContract(contractAddress, tokenID, startIndex, COUNT);
+      if (!recordsData || recordsData.length === 0) {
+        handleNoRecordsData();
+      } else {
+        handleRecordsData();
+      }
     }
-
-    // Handle records if any, else handle no records scenario
-    records && records.length > 0
-      ? handleRecordsData(records)
-      : handleNoRecordsData();
   } catch (error) {
     console.log("Initialization failed:", error);
+  }
+}
+
+async function fetchDataFromContract(
+  contractAddress,
+  tokenID,
+  startIndex,
+  count
+) {
+  const records = await getData(contractAddress, tokenID, startIndex, count);
+  if (records && records.length > 0) {
+    recordsData = [
+      ...recordsData,
+      ...records.map((data) => formatDataFromContract(data)),
+    ];
+    startIndex += records.length;
+    if (records.length >= count) {
+      await fetchDataFromContract(contractAddress, tokenID, startIndex, count);
+    }
   }
 }
 /**
@@ -44,15 +64,14 @@ function getQueryParams() {
   };
 }
 
-function handleRecordsData(records) {
-  records.forEach((data) => recordsData.push(formatDataFromContract(data)));
+function handleRecordsData() {
   recordsData.sort(
     (a, b) => new Date(b.metadata.createdAt) - new Date(a.metadata.createdAt)
   );
   latestRecord = recordsData[0];
+  createListenLatestRecordElement();
   numberOfRecord = recordsData.length;
   createRecordsTable(recordsData);
-  createListenLatestRecordElement();
 }
 
 function createListenLatestRecordElement() {

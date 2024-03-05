@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0x72D35D3C8405C5c1a71DDA497ed2587Fcc75f4e2";
+const SOUND_CONTRACT_ADDRESS = "0x3a6967f4f1B18257b7006eCB348432C8525feC47";
 
 const NETWORKS = {
   mainnet: 1,
@@ -13,7 +13,11 @@ const RPC_ENDPOINT = {
 
 const SOUND_CONTRACT_ABI = [
   {
-    inputs: [{ internalType: "address", name: "trustee_", type: "address" }],
+    inputs: [
+      { internalType: "address", name: "signer_", type: "address" },
+      { internalType: "address", name: "costReceiver_", type: "address" },
+      { internalType: "uint256", name: "cost_", type: "uint256" },
+    ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
@@ -48,9 +52,28 @@ const SOUND_CONTRACT_ABI = [
     type: "event",
   },
   {
+    anonymous: false,
     inputs: [
-      { internalType: "address", name: "contractAddress", type: "address" },
-      { internalType: "uint256", name: "tokenID", type: "uint256" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "contractAddress_", type: "address" },
+      { internalType: "uint256", name: "tokenID_", type: "uint256" },
       {
         components: [
           { internalType: "address", name: "owner", type: "address" },
@@ -58,19 +81,28 @@ const SOUND_CONTRACT_ABI = [
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data",
-        name: "data",
+        name: "data_",
         type: "tuple",
       },
     ],
     name: "add",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "cost",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "address", name: "contractAddress", type: "address" },
-      { internalType: "uint256", name: "tokenID", type: "uint256" },
+      { internalType: "address", name: "contractAddress_", type: "address" },
+      { internalType: "uint256", name: "tokenID_", type: "uint256" },
+      { internalType: "uint256", name: "startIndex", type: "uint256" },
+      { internalType: "uint256", name: "count", type: "uint256" },
     ],
     name: "get",
     outputs: [
@@ -89,33 +121,94 @@ const SOUND_CONTRACT_ABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "owner",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
-      { internalType: "address", name: "contractAddress", type: "address" },
-      { internalType: "uint256", name: "tokenID", type: "uint256" },
+      { internalType: "address", name: "contractAddress_", type: "address" },
+      { internalType: "uint256", name: "tokenID_", type: "uint256" },
+      { internalType: "uint256[]", name: "indexes_", type: "uint256[]" },
+    ],
+    name: "remove",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "cost_", type: "uint256" }],
+    name: "setCost",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        components: [
-          { internalType: "address", name: "owner", type: "address" },
-          { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "string", name: "metadata", type: "string" },
-        ],
-        internalType: "struct OwnerData.Data",
-        name: "data",
-        type: "tuple",
+        internalType: "address[]",
+        name: "contractAddresses_",
+        type: "address[]",
       },
+      { internalType: "uint256[]", name: "tokenIDs_", type: "uint256[]" },
+      { internalType: "bool", name: "isPublic_", type: "bool" },
+    ],
+    name: "setPublicTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
         components: [
-          { internalType: "bytes", name: "ownerSign", type: "bytes" },
-          { internalType: "uint256", name: "expiryBlock", type: "uint256" },
-          { internalType: "bytes32", name: "r", type: "bytes32" },
-          { internalType: "bytes32", name: "s", type: "bytes32" },
-          { internalType: "uint8", name: "v", type: "uint8" },
+          { internalType: "address", name: "contractAddress", type: "address" },
+          { internalType: "uint256", name: "tokenID", type: "uint256" },
+          {
+            components: [
+              { internalType: "address", name: "owner", type: "address" },
+              { internalType: "bytes", name: "dataHash", type: "bytes" },
+              { internalType: "string", name: "metadata", type: "string" },
+            ],
+            internalType: "struct OwnerData.Data",
+            name: "data",
+            type: "tuple",
+          },
+          {
+            components: [
+              { internalType: "bytes", name: "ownerSign", type: "bytes" },
+              { internalType: "uint256", name: "expiryBlock", type: "uint256" },
+              { internalType: "bytes32", name: "r", type: "bytes32" },
+              { internalType: "bytes32", name: "s", type: "bytes32" },
+              { internalType: "uint8", name: "v", type: "uint8" },
+            ],
+            internalType: "struct OwnerData.Signature",
+            name: "signature",
+            type: "tuple",
+          },
         ],
-        internalType: "struct OwnerData.Signature",
-        name: "signature",
-        type: "tuple",
+        internalType: "struct OwnerData.SignedAddParams[]",
+        name: "params_",
+        type: "tuple[]",
       },
     ],
     name: "signedAdd",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
+    name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -137,6 +230,12 @@ export async function setContract(rpcEndpoint) {
   }
 }
 
-export async function getData(contractAddress, tokenID) {
-  return contract.methods.get(contractAddress, tokenID).call();
+export async function getData(contractAddress, tokenID, startIndex, count) {
+  try {
+    return contract.methods
+      .get(contractAddress, tokenID, startIndex, count)
+      .call();
+  } catch (error) {
+    console.log("Failed to get data from contract:", error);
+  }
 }
