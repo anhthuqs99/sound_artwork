@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0x3a6967f4f1B18257b7006eCB348432C8525feC47";
+const SOUND_CONTRACT_ADDRESS = "0xe53a1E65740E9fE3314D5c271cAa309BC95145cD";
 
 const NETWORKS = {
   mainnet: 1,
@@ -21,6 +21,16 @@ const SOUND_CONTRACT_ABI = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
+  { inputs: [], name: "CostIsZero", type: "error" },
+  { inputs: [], name: "CostReceiverIsZeroAddress", type: "error" },
+  { inputs: [], name: "IndexOutOfBounds", type: "error" },
+  { inputs: [], name: "InvalidParameters", type: "error" },
+  { inputs: [], name: "InvalidSignature", type: "error" },
+  { inputs: [], name: "OwnerAndSenderMismatch", type: "error" },
+  { inputs: [], name: "OwnerDataAlreadyAdded", type: "error" },
+  { inputs: [], name: "PaymentRequiredForPublicToken", type: "error" },
+  { inputs: [], name: "SenderIsNotTheOwner", type: "error" },
+  { inputs: [], name: "TrusteeIsZeroAddress", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -40,6 +50,7 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
+          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         indexed: false,
@@ -78,6 +89,7 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
+          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data",
@@ -110,6 +122,7 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
+          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data[]",
@@ -169,36 +182,30 @@ const SOUND_CONTRACT_ABI = [
   },
   {
     inputs: [
+      { internalType: "address", name: "contractAddress_", type: "address" },
+      { internalType: "uint256", name: "tokenID_", type: "uint256" },
       {
         components: [
-          { internalType: "address", name: "contractAddress", type: "address" },
-          { internalType: "uint256", name: "tokenID", type: "uint256" },
-          {
-            components: [
-              { internalType: "address", name: "owner", type: "address" },
-              { internalType: "bytes", name: "dataHash", type: "bytes" },
-              { internalType: "string", name: "metadata", type: "string" },
-            ],
-            internalType: "struct OwnerData.Data",
-            name: "data",
-            type: "tuple",
-          },
-          {
-            components: [
-              { internalType: "bytes", name: "ownerSign", type: "bytes" },
-              { internalType: "uint256", name: "expiryBlock", type: "uint256" },
-              { internalType: "bytes32", name: "r", type: "bytes32" },
-              { internalType: "bytes32", name: "s", type: "bytes32" },
-              { internalType: "uint8", name: "v", type: "uint8" },
-            ],
-            internalType: "struct OwnerData.Signature",
-            name: "signature",
-            type: "tuple",
-          },
+          { internalType: "address", name: "owner", type: "address" },
+          { internalType: "bytes", name: "dataHash", type: "bytes" },
+          { internalType: "uint256", name: "blockNumber", type: "uint256" },
+          { internalType: "string", name: "metadata", type: "string" },
         ],
-        internalType: "struct OwnerData.SignedAddParams[]",
-        name: "params_",
-        type: "tuple[]",
+        internalType: "struct OwnerData.Data",
+        name: "data_",
+        type: "tuple",
+      },
+      {
+        components: [
+          { internalType: "bytes", name: "ownerSign", type: "bytes" },
+          { internalType: "uint256", name: "expiryBlock", type: "uint256" },
+          { internalType: "bytes32", name: "r", type: "bytes32" },
+          { internalType: "bytes32", name: "s", type: "bytes32" },
+          { internalType: "uint8", name: "v", type: "uint8" },
+        ],
+        internalType: "struct OwnerData.Signature",
+        name: "signature_",
+        type: "tuple",
       },
     ],
     name: "signedAdd",
