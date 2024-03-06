@@ -2,16 +2,24 @@
 
 ## Install static HTTP server
 
+```bash
 npm i http-server -g
+```
 
 ## Install minified package
 
+```bash
 npm install uglify-js -g
+```
 
 ## Minified js files before serve
 
-uglifyjs web3.min.js sound.js script.js --module -o sound-piece.js
+```bash
+uglifyjs src/web3.min.js src/sound.js src/script.js --module -o src/sound-piece.js
+```
 
 ## Run test
 
+```bash
 http-server ./src
+```

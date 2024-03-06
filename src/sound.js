@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0xe53a1E65740E9fE3314D5c271cAa309BC95145cD";
+const SOUND_CONTRACT_ADDRESS = "0xe314cA6a0AbA44a7C3bFC0f524D9bF3ae7A8fEA8";
 
 const NETWORKS = {
   mainnet: 1,
@@ -117,6 +117,29 @@ const SOUND_CONTRACT_ABI = [
       { internalType: "uint256", name: "count", type: "uint256" },
     ],
     name: "get",
+    outputs: [
+      {
+        components: [
+          { internalType: "address", name: "owner", type: "address" },
+          { internalType: "bytes", name: "dataHash", type: "bytes" },
+          { internalType: "uint256", name: "blockNumber", type: "uint256" },
+          { internalType: "string", name: "metadata", type: "string" },
+        ],
+        internalType: "struct OwnerData.Data[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "contractAddress_", type: "address" },
+      { internalType: "uint256", name: "tokenID_", type: "uint256" },
+      { internalType: "address", name: "owner_", type: "address" },
+    ],
+    name: "getByOwner",
     outputs: [
       {
         components: [
