@@ -1,5 +1,3 @@
-import { setContract, getData } from "./sound.js";
-
 const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
