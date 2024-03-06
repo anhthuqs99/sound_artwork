@@ -3,6 +3,9 @@ import { setContract, getData } from "./sound.js";
 const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
+const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
+const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
+const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
 const COUNT = 500;
 
 let recordsData = [];
@@ -28,6 +31,8 @@ async function initialize() {
       } else {
         handleRecordsData();
       }
+    } else {
+      handleNoRecordsData();
     }
   } catch (error) {
     console.log("Initialization failed:", error);
@@ -65,9 +70,6 @@ function getQueryParams() {
 }
 
 function handleRecordsData() {
-  recordsData.sort(
-    (a, b) => new Date(b.metadata.createdAt) - new Date(a.metadata.createdAt)
-  );
   latestRecord = recordsData[0];
   createListenLatestRecordElement();
   numberOfRecord = recordsData.length;
@@ -76,8 +78,15 @@ function handleRecordsData() {
 
 function createListenLatestRecordElement() {
   const listenLatestRecordElement = document.createElement("div");
-  listenLatestRecordElement.innerHTML = `<span id="duration-1" class="duration hidden"></span>
-                                        <button id="button-1" onclick="playLatestRecord()">[Listen]</button>`;
+  const durationEl = document.createElement("span");
+  durationEl.id = "duration-1";
+  durationEl.classList.add("duration", "hidden");
+  const listenButton = document.createElement("button");
+  listenButton.id = "button-1";
+  listenButton.textContent = "[Listen]";
+  listenButton.onclick = playLatestRecord.bind(this);
+  listenLatestRecordElement.appendChild(durationEl);
+  listenLatestRecordElement.appendChild(listenButton);
   document.getElementById("bottomGroup").appendChild(listenLatestRecordElement);
 }
 
@@ -85,7 +94,8 @@ function handleNoRecordsData() {
   const emptyData = document.createElement("div");
   emptyData.classList.add("empty-data");
   emptyData.textContent = "No laughter recorded yet. Check back soon.";
-  document.getElementById("records-table").appendChild(emptyData);
+  RECORD_TABLE_ELEMENT.textContent = "";
+  RECORD_TABLE_ELEMENT.appendChild(emptyData);
   PLAY_ALL_BUTTON_ELEMENT.style.display = "none";
 }
 
@@ -112,14 +122,14 @@ function formatDataFromContract(data) {
  * @param {Array} records - Formatted records data from contract.
  */
 function createRecordsTable(records) {
-  const recordsTable = document.getElementById("records-table");
-  const playAllButton = PLAY_ALL_BUTTON_ELEMENT;
-  playAllButton.textContent = "[Play All]";
+  RECORD_TABLE_ELEMENT.textContent = "";
+  PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
+  PLAY_ALL_BUTTON_ELEMENT.onclick = allAudioPlayingHandler.bind(this);
 
   for (const [index, record] of records.entries()) {
     const tr = createRecordRow(index, record);
     // Append tr to recordsTable
-    recordsTable.appendChild(tr);
+    RECORD_TABLE_ELEMENT.appendChild(tr);
   }
 }
 
@@ -297,8 +307,6 @@ function listenEventTimeUpdate() {
 function removeEventTimeUpdate() {
   AUDIO_ELEMENT.removeEventListener("timeupdate", () => {});
 }
-
-window.allAudioPlayingHandler = allAudioPlayingHandler;
-window.togglePages = togglePages;
-window.playLatestRecord = playLatestRecord;
+LAUGHTER_BUTTON_ELEMENT.onclick = togglePages.bind(this);
+CLOSE_BUTTON_ELEMENT.onclick = togglePages.bind(this);
 initialize();

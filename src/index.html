@@ -9,18 +9,22 @@
     <div class="container">
       <div class="page">
         <div id="laughter" class="hidden flex-column">
+          <!-- Remove next line later -->
+          <div>For testing purpose</div>
           <div class="group">
             <div class="title">LAUGHTER</div>
-            <button onclick="togglePages()">[X]</button>
+            <button id="closeButton">[X]</button>
           </div>
           <div class="group">
             <span>&nbsp;</span>
-            <button id="play-all" onclick="allAudioPlayingHandler()"></button>
+            <button id="play-all"></button>
           </div>
-          <div id="records-table" class="records"></div>
+          <div id="records-table" class="records">Loading ...</div>
         </div>
         <div id="listen" class="flex-column space-between">
           <div>
+            <!-- Remove next line later -->
+            <div>For testing purpose</div>
             <div class="group title title-margin">SOUND PIECE V</div>
             <div class="group">Spring</div>
             <div>
@@ -32,9 +36,7 @@
             id="bottomGroup"
             class="flex-row-reverse space-between bottom-group"
           >
-            <button id="laughterButton" onclick="togglePages()">
-              [Laughter]
-            </button>
+            <button id="laughterButton">[Laughter]</button>
           </div>
         </div>
         <audio id="audio" controls hidden></audio>
