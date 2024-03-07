@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0x4596629AeA2d986EaEd662Ff5D56e60199FeFdbb";
+const SOUND_CONTRACT_ADDRESS = "0x6534fF93fbd5553d3a0D762053Dd5Bf8942B7Cc8";
 
 const NETWORKS = {
   mainnet: 1,
@@ -49,7 +49,6 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         indexed: false,
@@ -88,7 +87,6 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data",
@@ -121,7 +119,6 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data[]",
@@ -144,7 +141,6 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data[]",
@@ -210,7 +206,6 @@ const SOUND_CONTRACT_ABI = [
         components: [
           { internalType: "address", name: "owner", type: "address" },
           { internalType: "bytes", name: "dataHash", type: "bytes" },
-          { internalType: "uint256", name: "blockNumber", type: "uint256" },
           { internalType: "string", name: "metadata", type: "string" },
         ],
         internalType: "struct OwnerData.Data",
