@@ -4,10 +4,10 @@ const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
 const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
-const COUNT = 200;
+const COUNT = 100;
 
 let recordsData = [];
-let numberOfRecord = recordsData.length;
+let numberOfRecord = 0;
 let startIndex = 0;
 let latestRecord = {};
 let isPlayingAudio = false;
@@ -26,8 +26,6 @@ async function initialize() {
       await fetchDataFromContract(contractAddress, tokenID, startIndex, COUNT);
       if (!recordsData || recordsData.length === 0) {
         handleNoRecordsData();
-      } else {
-        handleRecordsData();
       }
     } else {
       handleNoRecordsData();
@@ -45,10 +43,20 @@ async function fetchDataFromContract(
 ) {
   const records = await getData(contractAddress, tokenID, startIndex, count);
   if (records && records.length > 0) {
-    recordsData = [
-      ...recordsData,
-      ...records.map((data) => formatDataFromContract(data)),
-    ];
+    records.map((data) => {
+      const formatData = formatDataFromContract(data);
+      if (formatData.dataHash) {
+        recordsData.push(formatData);
+        // Handle not empty records data
+        if (numberOfRecord === 0) {
+          handleRecordsData();
+        }
+        createRecordRow(numberOfRecord, formatData);
+        numberOfRecord++;
+      }
+    });
+
+    // Detect can load more records
     startIndex += records.length;
     if (records.length >= count) {
       await fetchDataFromContract(contractAddress, tokenID, startIndex, count);
@@ -68,10 +76,11 @@ function getQueryParams() {
 }
 
 function handleRecordsData() {
+  RECORD_TABLE_ELEMENT.textContent = "";
+  PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
+  PLAY_ALL_BUTTON_ELEMENT.onclick = allAudioPlayingHandler.bind(this);
   latestRecord = recordsData[0];
   createListenLatestRecordElement();
-  numberOfRecord = recordsData.length;
-  createRecordsTable(recordsData);
 }
 
 function createListenLatestRecordElement() {
@@ -115,22 +124,6 @@ function formatDataFromContract(data) {
   return formatData;
 }
 
-/**
- * Creates records in the table based on the provided array of records.
- * @param {Array} records - Formatted records data from contract.
- */
-function createRecordsTable(records) {
-  RECORD_TABLE_ELEMENT.textContent = "";
-  PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
-  PLAY_ALL_BUTTON_ELEMENT.onclick = allAudioPlayingHandler.bind(this);
-
-  for (const [index, record] of records.entries()) {
-    const tr = createRecordRow(index, record);
-    // Append tr to recordsTable
-    RECORD_TABLE_ELEMENT.appendChild(tr);
-  }
-}
-
 function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
@@ -153,7 +146,8 @@ function createRecordRow(index, record) {
   ); // Binding click event to the audioPlayingHandler function
 
   tr.append(td1, td2, td3);
-  return tr;
+  RECORD_TABLE_ELEMENT.appendChild(tr);
+  // return tr;
 }
 
 function formatTimeDuration(durationInSeconds) {
@@ -202,7 +196,6 @@ function playAudio(index, audioSource) {
   });
   AUDIO_ELEMENT.src = `${IPFS_PREFIX}${audioSource}`;
   AUDIO_ELEMENT.play();
-  console.log("Play audio with src: ", AUDIO_ELEMENT.src);
   listenEventTimeUpdate();
 }
 
