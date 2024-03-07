@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0xe314cA6a0AbA44a7C3bFC0f524D9bF3ae7A8fEA8";
+const SOUND_CONTRACT_ADDRESS = "0x4596629AeA2d986EaEd662Ff5D56e60199FeFdbb";
 
 const NETWORKS = {
   mainnet: 1,
@@ -21,7 +21,6 @@ const SOUND_CONTRACT_ABI = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
-  { inputs: [], name: "CostIsZero", type: "error" },
   { inputs: [], name: "CostReceiverIsZeroAddress", type: "error" },
   { inputs: [], name: "IndexOutOfBounds", type: "error" },
   { inputs: [], name: "InvalidParameters", type: "error" },

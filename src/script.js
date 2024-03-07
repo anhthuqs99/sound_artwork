@@ -4,7 +4,7 @@ const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
 const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
-const COUNT = 500;
+const COUNT = 200;
 
 let recordsData = [];
 let numberOfRecord = recordsData.length;
