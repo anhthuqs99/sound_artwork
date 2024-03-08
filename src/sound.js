@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0x6534fF93fbd5553d3a0D762053Dd5Bf8942B7Cc8";
+const SOUND_CONTRACT_ADDRESS = "0xcE6B8E357aaf9EC3A5ACD2F47364586BCF54Afef";
 
 const NETWORKS = {
   mainnet: 1,
@@ -15,14 +15,13 @@ const SOUND_CONTRACT_ABI = [
   {
     inputs: [
       { internalType: "address", name: "signer_", type: "address" },
-      { internalType: "address", name: "costReceiver_", type: "address" },
-      { internalType: "uint256", name: "cost_", type: "uint256" },
+      { internalType: "address", name: "serviceFeeReceiver_", type: "address" },
+      { internalType: "uint256", name: "serviceFee_", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
-  { inputs: [], name: "CostReceiverIsZeroAddress", type: "error" },
-  { inputs: [], name: "IndexOutOfBounds", type: "error" },
+  { inputs: [], name: "EmptyServiceFeeReceiver", type: "error" },
   { inputs: [], name: "InvalidParameters", type: "error" },
   { inputs: [], name: "InvalidSignature", type: "error" },
   { inputs: [], name: "OwnerAndSenderMismatch", type: "error" },
@@ -66,6 +65,31 @@ const SOUND_CONTRACT_ABI = [
       {
         indexed: true,
         internalType: "address",
+        name: "contractAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "tokenID",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "indexes",
+        type: "uint256[]",
+      },
+    ],
+    name: "DataRemoved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "previousOwner",
         type: "address",
       },
@@ -97,13 +121,6 @@ const SOUND_CONTRACT_ABI = [
     name: "add",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "cost",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -177,10 +194,17 @@ const SOUND_CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "cost_", type: "uint256" }],
-    name: "setCost",
-    outputs: [],
-    stateMutability: "nonpayable",
+    inputs: [],
+    name: "serviceFee",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "serviceFeeReceiver",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -194,6 +218,29 @@ const SOUND_CONTRACT_ABI = [
       { internalType: "bool", name: "isPublic_", type: "bool" },
     ],
     name: "setPublicTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "serviceFee_", type: "uint256" }],
+    name: "setServiceFee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "serviceFeeReceiver_", type: "address" },
+    ],
+    name: "setServiceFeeReceiver",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "signer_", type: "address" }],
+    name: "setSigner",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -228,6 +275,13 @@ const SOUND_CONTRACT_ABI = [
     name: "signedAdd",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "signer",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
     type: "function",
   },
   {
