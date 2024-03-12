@@ -5,6 +5,9 @@ const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
 const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
 const COUNT = 100;
+const EXHIBITION_CONTRACT_ADDRESS =
+  "0x7D3A693e457E0ab73b24B5bBC88B5568B1591f17";
+const TOKEN_ID = "4366351728550144823252617907700123860119487616";
 
 let recordsData = [];
 let numberOfRecord = 0;
@@ -20,7 +23,9 @@ let currentAudioDuration = 0;
  */
 async function initialize() {
   try {
-    const { contractAddress, tokenID, rpcEndpoint } = getQueryParams();
+    let { contractAddress, tokenID, rpcEndpoint } = getQueryParams();
+    contractAddress = contractAddress || EXHIBITION_CONTRACT_ADDRESS;
+    tokenID = tokenID || TOKEN_ID;
     if (contractAddress && tokenID) {
       await setContract(rpcEndpoint);
       await fetchDataFromContract(contractAddress, tokenID, startIndex, COUNT);
