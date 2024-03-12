@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0xcE6B8E357aaf9EC3A5ACD2F47364586BCF54Afef";
+const SOUND_CONTRACT_ADDRESS = "0xA44FDAe923C5E838F21dF9f2e2F3eaA7B9586cEf";
 
 const NETWORKS = {
   mainnet: 1,
@@ -17,6 +17,7 @@ const SOUND_CONTRACT_ABI = [
       { internalType: "address", name: "signer_", type: "address" },
       { internalType: "address", name: "serviceFeeReceiver_", type: "address" },
       { internalType: "uint256", name: "serviceFee_", type: "uint256" },
+      { internalType: "uint256", name: "publicToken_", type: "uint256" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -176,6 +177,13 @@ const SOUND_CONTRACT_ABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "publicToken",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "contractAddress_", type: "address" },
       { internalType: "uint256", name: "tokenID_", type: "uint256" },
@@ -209,15 +217,9 @@ const SOUND_CONTRACT_ABI = [
   },
   {
     inputs: [
-      {
-        internalType: "address[]",
-        name: "contractAddresses_",
-        type: "address[]",
-      },
-      { internalType: "uint256[]", name: "tokenIDs_", type: "uint256[]" },
-      { internalType: "bool", name: "isPublic_", type: "bool" },
+      { internalType: "uint256", name: "publicToken_", type: "uint256" },
     ],
-    name: "setPublicTokens",
+    name: "setPublicToken",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
