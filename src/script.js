@@ -1,4 +1,4 @@
-const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
+const IPFS_PREFIX = "https://ipfs.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
