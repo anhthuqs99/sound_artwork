@@ -14,7 +14,7 @@ let numberOfRecord = 0;
 let startIndex = 0;
 let isPlayingAudio = false;
 let isPlayAllAudio = false;
-let currentPlayingIndex = -1;
+let currentPlayingIndex = 0;
 let currentAudioDuration = 0;
 
 /**
