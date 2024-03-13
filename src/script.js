@@ -1,4 +1,4 @@
-const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
+const IPFS_PREFIX = "https://ipfs.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
@@ -6,8 +6,8 @@ const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
 const COUNT = 5;
 const EXHIBITION_CONTRACT_ADDRESS =
-  "0xeB73dd0aD85BB09f3b24110E1051c93aad46096c";
-const TOKEN_ID = "1523115895868291363820686614672318388550665344";
+  "0x1d9787369b1dcf709f92da1d8743c2a4b6028a83";
+const TOKEN_ID = "5429577522081131997036023001590580143450575936";
 
 let recordsData = [];
 let numberOfRecord = 0;
