@@ -1,0 +1,147 @@
+@font-face {
+  font-family: 'Trade Gothic';
+  src: url('./assets/TradeGothic/font.woff');
+  font-display: swap;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Gotham Regular';
+  src: url('./assets/GothamRegular/Gotham-Light_Web.woff');
+  font-display: swap;
+  font-weight: 400;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Trade Gothic', sans-serif;
+  margin: unset;
+  background: #000000;
+  --maxSize: min(100vh, 100vw, 1200px); /* max size artwork 1200px included padding */
+  --artworkSize: calc(var(--maxSize));
+  --artworkFontSize: calc(var(--artworkSize) * 36 / 1200);
+  --artworkPadding: calc(var(--artworkSize) * 90 / 1200);
+  --artworkMargin: calc(var(--artworkSize) * 64 / 1200);
+  --rowPadding: calc(var(--artworkSize) * 32 / 1200);
+}
+
+p {
+  margin: unset;
+}
+
+button :active{
+  box-shadow: none;
+}
+
+div, button, p, span {
+  line-height: 170%;
+}
+
+button {
+  border: unset;
+  background: unset;
+  font-size: inherit;
+  padding: unset;
+  font-family: 'Trade Gothic', sans-serif;
+  cursor: pointer;
+  color: #000000;
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.flex-row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--artworkFontSize);
+}
+
+.container >.page {
+  width: calc(var(--artworkSize) - var(--artworkPadding) * 2);
+  height: calc(var(--artworkSize) - var(--artworkPadding) * 2);
+  padding: var(--artworkPadding);
+  aspect-ratio: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.container >.page .duration {
+  padding-right: var(--artworkPadding);
+}
+
+.container >.page .group {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--artworkPadding);
+}
+
+.container >.page .empty-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(var(--artworkSize) * 0.4);
+}
+
+.container .title {
+  font-family: 'Gotham Regular';
+  letter-spacing: 2.85px;
+}
+
+.container .title-margin {
+  margin-bottom: calc(var(--artworkPadding) * 77 / 90);
+}
+
+.container .bottom-group {
+  transform: translateY(calc(var(--artworkSize) * 23 / 1200));
+}
+
+.container >.page .records {
+  overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} ::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.container >.page .records >tr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #000000;
+  padding: var(--rowPadding) 0;
+}
+
+.container >.page .records >tr >td,
+.container >.page .records >tr >button {
+  padding: unset;
+  height: 100%;
+  line-height: 100%;
+}

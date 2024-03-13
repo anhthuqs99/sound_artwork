@@ -1,5 +1,5 @@
 // This contract is on testnet, update to the PRD contract address after deployment
-const SOUND_CONTRACT_ADDRESS = "0xA44FDAe923C5E838F21dF9f2e2F3eaA7B9586cEf";
+const SOUND_CONTRACT_ADDRESS = "0x0D2747bb3650bEbB2E3a0d89346348f788855cB4";
 
 const NETWORKS = {
   mainnet: 1,

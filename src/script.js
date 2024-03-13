@@ -4,15 +4,14 @@ const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
 const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
-const COUNT = 100;
+const COUNT = 5;
 const EXHIBITION_CONTRACT_ADDRESS =
-  "0x987f27278A8C7F55e49056Cd5d5b7B98702C4f91";
-const TOKEN_ID = "118475167913932636740385844609380276314784320";
+  "0xf31725F011cEB81D4cc313349a5942C31ed0AAe5";
+const TOKEN_ID = "1878818250871676369035922701317177438642275461";
 
 let recordsData = [];
 let numberOfRecord = 0;
 let startIndex = 0;
-let latestRecord = {};
 let isPlayingAudio = false;
 let isPlayAllAudio = false;
 let currentPlayingIndex = -1;
@@ -84,22 +83,6 @@ function handleRecordsData() {
   RECORD_TABLE_ELEMENT.textContent = "";
   PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
   PLAY_ALL_BUTTON_ELEMENT.onclick = allAudioPlayingHandler.bind(this);
-  latestRecord = recordsData[0];
-  createListenLatestRecordElement();
-}
-
-function createListenLatestRecordElement() {
-  const listenLatestRecordElement = document.createElement("div");
-  const durationEl = document.createElement("span");
-  durationEl.id = "duration-1";
-  durationEl.classList.add("duration", "hidden");
-  const listenButton = document.createElement("button");
-  listenButton.id = "button-1";
-  listenButton.textContent = "[Listen]";
-  listenButton.onclick = playLatestRecord.bind(this);
-  listenLatestRecordElement.appendChild(durationEl);
-  listenLatestRecordElement.appendChild(listenButton);
-  document.getElementById("bottomGroup").appendChild(listenLatestRecordElement);
 }
 
 function handleNoRecordsData() {
@@ -211,21 +194,6 @@ function stopAudio() {
   resetAudioPlayingStatus();
 }
 
-function playLatestRecord() {
-  if (latestRecord) {
-    document.getElementById("duration-1").classList.remove("hidden");
-    document.getElementById("duration-1").textContent =
-      `00:00 - ${formatTimeDuration(latestRecord.metadata.duration)}`;
-    document.getElementById("laughterButton").disabled = true;
-    currentPlayingIndex = -1;
-    audioPlayingHandler(
-      -1,
-      latestRecord.dataHash,
-      latestRecord.metadata.duration
-    );
-  }
-}
-
 function allAudioPlayingHandler() {
   if (isPlayingAudio && !isPlayAllAudio) {
     stopAudio();
@@ -253,7 +221,6 @@ function resetAudioPlayingStatus() {
     "[Play]";
   document.getElementById(`duration${currentPlayingIndex}`).textContent =
     formatTimeDuration(currentAudioDuration);
-  document.getElementById("duration-1").classList.add("hidden");
   document.getElementById("laughterButton").disabled = false;
 }
 
