@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sound Piece V</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="page">
+        <div id="laughter" class="hidden flex-column">
+          <div class="group">
+            <div class="title">LAUGHTER</div>
+            <button id="closeButton">[X]</button>
+          </div>
+          <div class="group">
+            <span>&nbsp;</span>
+            <button id="play-all"></button>
+          </div>
+          <div id="records-table" class="records">Loading ...</div>
+        </div>
+        <div id="listen" class="flex-column space-between">
+          <div>
+            <div class="group title title-margin">SOUND PIECE V</div>
+            <div class="group">Spring</div>
+            <div>
+              Tape the sound of friends laughing together. <br />
+              Save it for a rainy day.
+            </div>
+          </div>
+          <div
+            id="bottomGroup"
+            class="flex-row-reverse space-between bottom-group"
+          >
+            <button id="laughterButton">[Laughter]</button>
+          </div>
+        </div>
+        <audio id="audio" controls hidden></audio>
+      </div>
+    </div>
+  </body>
+  <script src="./sound-piece.js" type="module"></script>
+</html>
