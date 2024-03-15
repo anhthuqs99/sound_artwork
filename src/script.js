@@ -222,7 +222,6 @@ function allAudioPlayingHandler() {
   } else {
     PLAY_ALL_BUTTON_ELEMENT.textContent = "[Play All]";
     stopAudio();
-    currentPlayingIndex = -1;
   }
 }
 
