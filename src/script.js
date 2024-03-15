@@ -112,12 +112,38 @@ function formatDataFromContract(data) {
   return formatData;
 }
 
-function createRecordRow(index, record) {
+async function getDomainName(address) {
+  try {
+    const lookup = address.toLowerCase().substr(2) + ".addr.reverse";
+    const ResolverContract = await web3.eth.ens.getResolver(lookup);
+    const nh = namehash.hash(lookup);
+    const name = await ResolverContract.methods.name(nh).call();
+    if (name && name.length) {
+      const verifiedAddress = await web3.eth.ens.getAddress(name);
+      if (
+        verifiedAddress &&
+        verifiedAddress.toLowerCase() === address.toLowerCase()
+      ) {
+        return name;
+      }
+    }
+  } catch (error) {
+    console.log("Error in getDomainName:", error);
+    return "";
+  }
+  return "";
+}
+
+async function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
-
   const td1 = document.createElement("td");
   td1.textContent = formatDateTime(record.metadata.createdAt);
+
+  const td4 = document.createElement("td");
+  const owner = await getDomainName(record.owner);
+  td4.textContent =
+    owner || record.owner.substring(0, 6) + "..." + record.owner.slice(-4);
 
   const td2 = document.createElement("td");
   td2.id = `duration${index}`;
@@ -133,7 +159,7 @@ function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
-  tr.append(td1, td2, td3);
+  tr.append(td1, td4, td2, td3);
   RECORD_TABLE_ELEMENT.appendChild(tr);
   // return tr;
 }
@@ -256,10 +282,11 @@ function listenEventTimeUpdate() {
       return;
     }
     const currentTime = AUDIO_ELEMENT.currentTime;
-    document.getElementById(`duration${currentPlayingIndex}`).textContent =
-      `${formatTimeDuration(currentTime)} - ${formatTimeDuration(
-        currentAudioDuration
-      )}`;
+    document.getElementById(
+      `duration${currentPlayingIndex}`
+    ).textContent = `${formatTimeDuration(currentTime)} - ${formatTimeDuration(
+      currentAudioDuration
+    )}`;
     if (AUDIO_ELEMENT.currentTime >= AUDIO_ELEMENT.duration) {
       resetAudioPlayingStatus();
       playNextAudio();
