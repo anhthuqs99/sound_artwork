@@ -51,7 +51,7 @@ async function fetchDataFromContract(
 ) {
   const records = await getData(contractAddress, tokenID, startIndex, count);
   if (records && records.length > 0) {
-    records.map((data) => {
+    records.map(async (data) => {
       const formatData = formatDataFromContract(data);
       if (formatData.dataHash) {
         recordsData.push(formatData);
@@ -59,7 +59,7 @@ async function fetchDataFromContract(
         if (numberOfRecord === 0) {
           handleRecordsData();
         }
-        createRecordRow(numberOfRecord, formatData);
+        await createRecordRow(numberOfRecord, formatData);
         numberOfRecord++;
       }
     });
@@ -116,10 +116,30 @@ function formatDataFromContract(data) {
   return formatData;
 }
 
-function createRecordRow(index, record) {
+async function getDomainName(address) {
+  try {
+    const lookup = address.toLowerCase().substr(2) + ".addr.reverse";
+    const ResolverContract = await web3.eth.ens.getResolver(lookup);
+    const nh = namehash.hash(lookup);
+    const name = await ResolverContract.methods.name(nh).call();
+    if (name && name.length) {
+      const verifiedAddress = await web3.eth.ens.getAddress(name);
+      if (
+        verifiedAddress &&
+        verifiedAddress.toLowerCase() === address.toLowerCase()
+      ) {
+        return name;
+      }
+    }
+    return "";
+  } catch (error) {
+    return "";
+  }
+}
+
+async function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
-
   const td1 = document.createElement("td");
   td1.textContent = formatDateTime(record.metadata.createdAt);
   td1.className = "td1";
@@ -140,8 +160,9 @@ function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
+  const ownerEns = await getDomainName(record.owner);
   const td4 = document.createElement("td");
-  td4.textContent = truncateAddress(record.owner);
+  td4.textContent = ownerEns || truncateAddress(record.owner);
   td4.className = "td4";
 
   tr.append(td1, td4, td2, td3);
