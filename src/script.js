@@ -51,7 +51,7 @@ async function fetchDataFromContract(
 ) {
   const records = await getData(contractAddress, tokenID, startIndex, count);
   if (records && records.length > 0) {
-    records.map(async (data) => {
+    for (const data of records) {
       const formatData = formatDataFromContract(data);
       if (formatData.dataHash) {
         recordsData.push(formatData);
@@ -59,10 +59,11 @@ async function fetchDataFromContract(
         if (numberOfRecord === 0) {
           handleRecordsData();
         }
-        await createRecordRow(numberOfRecord, formatData);
+        const tr = createRecordRow(numberOfRecord, formatData);
+        RECORD_TABLE_ELEMENT.appendChild(tr);
         numberOfRecord++;
       }
-    });
+    }
 
     // Detect can load more records
     startIndex += records.length;
@@ -137,7 +138,7 @@ async function getDomainName(address) {
   }
 }
 
-async function createRecordRow(index, record) {
+function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
   const td1 = document.createElement("td");
@@ -160,14 +161,15 @@ async function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
-  const ownerEns = await getDomainName(record.owner);
   const td4 = document.createElement("td");
-  td4.textContent = ownerEns || truncateAddress(record.owner);
+  td4.textContent = truncateAddress(record.owner);
   td4.className = "td4";
+  getDomainName(record.owner).then((ownerEns) => {
+    td4.textContent = ownerEns || truncateAddress(record.owner);
+  });
 
   tr.append(td1, td4, td2, td3);
-  RECORD_TABLE_ELEMENT.appendChild(tr);
-  // return tr;
+  return tr;
 }
 
 function formatTimeDuration(durationInSeconds) {
