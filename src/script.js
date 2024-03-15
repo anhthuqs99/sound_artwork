@@ -164,9 +164,9 @@ function createRecordRow(index, record) {
   const td4 = document.createElement("td");
   td4.textContent = truncateAddress(record.owner);
   td4.className = "td4";
-  // getDomainName(record.owner).then((ownerEns) => {
-  //   td4.textContent = ownerEns || truncateAddress(record.owner);
-  // });
+  getDomainName(record.owner).then((ownerEns) => {
+    td4.textContent = ownerEns || truncateAddress(record.owner);
+  });
 
   tr.append(td1, td4, td2, td3);
   return tr;
