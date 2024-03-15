@@ -124,18 +124,25 @@ function formatDataFromContract(data) {
   return formatData;
 }
 
+function truncateAddress(address) {
+  return `[${address.slice(0, 4)}....${address.slice(-4)}]`;
+}
+
 function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
 
   const td1 = document.createElement("td");
   td1.textContent = formatDateTime(record.metadata.createdAt);
+  td1.className = "td1";
 
   const td2 = document.createElement("td");
+  td2.className = "td2";
   td2.id = `duration${index}`;
   td2.textContent = formatTimeDuration(record.metadata.duration);
 
   const td3 = document.createElement("button");
+  td3.className = "td3";
   td3.id = `button${index}`;
   td3.textContent = "[Play]";
   td3.onclick = audioPlayingHandler.bind(
@@ -145,7 +152,11 @@ function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
-  tr.append(td1, td2, td3);
+  const td4 = document.createElement("td");
+  td4.textContent = truncateAddress(record.owner);
+  td4.className = "td4";
+
+  tr.append(td1, td4, td2, td3);
   RECORD_TABLE_ELEMENT.appendChild(tr);
   // return tr;
 }
