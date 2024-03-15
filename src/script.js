@@ -4,7 +4,7 @@ const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
 const LAUGHTER_BUTTON_ELEMENT = document.getElementById("laughterButton");
 const CLOSE_BUTTON_ELEMENT = document.getElementById("closeButton");
-const COUNT = 5;
+const COUNT = 100;
 const EXHIBITION_CONTRACT_ADDRESS =
   "0x1d9787369b1dcf709f92da1d8743c2a4b6028a83";
 const TOKEN_ID = "5429577522081131997036023001590580143450575936";
@@ -37,6 +37,10 @@ async function initialize() {
   } catch (error) {
     console.log("Initialization failed:", error);
   }
+}
+
+function truncateAddress(address) {
+  return `[${address.slice(0, 4)}....${address.slice(-4)}]`;
 }
 
 async function fetchDataFromContract(
@@ -118,12 +122,15 @@ function createRecordRow(index, record) {
 
   const td1 = document.createElement("td");
   td1.textContent = formatDateTime(record.metadata.createdAt);
+  td1.className = "td1";
 
   const td2 = document.createElement("td");
+  td2.className = "td2";
   td2.id = `duration${index}`;
   td2.textContent = formatTimeDuration(record.metadata.duration);
 
   const td3 = document.createElement("button");
+  td3.className = "td3";
   td3.id = `button${index}`;
   td3.textContent = "[Play]";
   td3.onclick = audioPlayingHandler.bind(
@@ -133,7 +140,11 @@ function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
-  tr.append(td1, td2, td3);
+  const td4 = document.createElement("td");
+  td4.textContent = truncateAddress(record.owner);
+  td4.className = "td4";
+
+  tr.append(td1, td4, td2, td3);
   RECORD_TABLE_ELEMENT.appendChild(tr);
   // return tr;
 }
