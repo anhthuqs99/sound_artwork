@@ -123,7 +123,7 @@ button {
 }
 
 .container >.page .records >tr .td1 {
-  min-width: calc(var(--artworkSize) * 139 / 1200);
+  width: calc(var(--artworkSize) * 139 / 1200);
   justify-content: center;
 }
 
@@ -135,11 +135,11 @@ button {
 }
 
 .container >.page .records >tr .td2 {
-  min-width: calc(var(--artworkSize) * 215 / 1200);
+  width: calc(var(--artworkSize) * 215 / 1200);
   justify-content: center;
 }
 
 .container >.page .records >tr .td3 {
-  min-width: calc(var(--artworkSize) * 89 / 1200);
+  width: calc(var(--artworkSize) * 89 / 1200);
   justify-content: center;
 }
