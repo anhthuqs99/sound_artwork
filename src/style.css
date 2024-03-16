@@ -157,6 +157,7 @@ button {
 .container >.page .records >tr .td2 {
   width: calc(var(--artworkSize) * 215 / 1200);
   justify-content: center;
+  display: inline-flex;
 }
 
 .container >.page .records >tr .td3 {
