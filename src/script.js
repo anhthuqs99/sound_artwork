@@ -43,7 +43,7 @@ async function fetchDataFromContract(
 ) {
   const records = await getData(contractAddress, tokenID, startIndex, count);
   if (records && records.length > 0) {
-    records.map((data) => {
+    for (const data of records) {
       const formatData = formatDataFromContract(data);
       if (formatData.dataHash) {
         recordsData.push(formatData);
@@ -51,10 +51,11 @@ async function fetchDataFromContract(
         if (numberOfRecord === 0) {
           handleRecordsData();
         }
-        createRecordRow(numberOfRecord, formatData);
+        const tr = createRecordRow(numberOfRecord, formatData);
+        RECORD_TABLE_ELEMENT.appendChild(tr);
         numberOfRecord++;
       }
-    });
+    }
 
     // Detect can load more records
     startIndex += records.length;
@@ -128,6 +129,27 @@ function truncateAddress(address) {
   return `[${address.slice(0, 4)}....${address.slice(-4)}]`;
 }
 
+async function getDomainName(address) {
+  try {
+    const lookup = address.toLowerCase().substr(2) + ".addr.reverse";
+    const ResolverContract = await web3.eth.ens.getResolver(lookup);
+    const nh = namehash.hash(lookup);
+    const name = await ResolverContract.methods.name(nh).call();
+    if (name && name.length) {
+      const verifiedAddress = await web3.eth.ens.getAddress(name);
+      if (
+        verifiedAddress &&
+        verifiedAddress.toLowerCase() === address.toLowerCase()
+      ) {
+        return name;
+      }
+    }
+    return "";
+  } catch (error) {
+    return "";
+  }
+}
+
 function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
@@ -156,9 +178,13 @@ function createRecordRow(index, record) {
   td4.textContent = truncateAddress(record.owner);
   td4.className = "td4";
 
+  getDomainName(record.owner).then((ownerEns) => {
+    td4.textContent = ownerEns || truncateAddress(record.owner);
+  });
+
   tr.append(td1, td4, td2, td3);
-  RECORD_TABLE_ELEMENT.appendChild(tr);
-  // return tr;
+  // RECORD_TABLE_ELEMENT.appendChild(tr);
+  return tr;
 }
 
 function formatTimeDuration(durationInSeconds) {
