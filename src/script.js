@@ -101,7 +101,7 @@ function createListenLatestRecordElement() {
 function handleNoRecordsData() {
   const emptyData = document.createElement("div");
   emptyData.classList.add("empty-data");
-  emptyData.textContent = "No laughter recorded yet. Check back soon.";
+  emptyData.textContent = "No Sounds Saved.";
   RECORD_TABLE_ELEMENT.textContent = "";
   RECORD_TABLE_ELEMENT.appendChild(emptyData);
   PLAY_ALL_BUTTON_ELEMENT.style.display = "none";
