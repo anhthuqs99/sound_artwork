@@ -43,7 +43,7 @@ async function fetchDataFromContract(
 ) {
   const records = await getData(contractAddress, tokenID, startIndex, count);
   if (records && records.length > 0) {
-    records.map((data) => {
+    for (const data of records) {
       const formatData = formatDataFromContract(data);
       if (formatData.dataHash) {
         recordsData.push(formatData);
@@ -51,10 +51,11 @@ async function fetchDataFromContract(
         if (numberOfRecord === 0) {
           handleRecordsData();
         }
-        createRecordRow(numberOfRecord, formatData);
+        const tr = createRecordRow(numberOfRecord, formatData);
+        RECORD_TABLE_ELEMENT.appendChild(tr);
         numberOfRecord++;
       }
-    });
+    }
 
     // Detect can load more records
     startIndex += records.length;
@@ -100,7 +101,7 @@ function createListenLatestRecordElement() {
 function handleNoRecordsData() {
   const emptyData = document.createElement("div");
   emptyData.classList.add("empty-data");
-  emptyData.textContent = "No laughter recorded yet. Check back soon.";
+  emptyData.textContent = "No Sounds Saved.";
   RECORD_TABLE_ELEMENT.textContent = "";
   RECORD_TABLE_ELEMENT.appendChild(emptyData);
   PLAY_ALL_BUTTON_ELEMENT.style.display = "none";
@@ -124,18 +125,46 @@ function formatDataFromContract(data) {
   return formatData;
 }
 
+function truncateAddress(address) {
+  return `[${address.slice(0, 4)}....${address.slice(-4)}]`;
+}
+
+async function getDomainName(address) {
+  try {
+    const lookup = address.toLowerCase().substr(2) + ".addr.reverse";
+    const ResolverContract = await web3.eth.ens.getResolver(lookup);
+    const nh = namehash.hash(lookup);
+    const name = await ResolverContract.methods.name(nh).call();
+    if (name && name.length) {
+      const verifiedAddress = await web3.eth.ens.getAddress(name);
+      if (
+        verifiedAddress &&
+        verifiedAddress.toLowerCase() === address.toLowerCase()
+      ) {
+        return name;
+      }
+    }
+    return "";
+  } catch (error) {
+    return "";
+  }
+}
+
 function createRecordRow(index, record) {
   const tr = document.createElement("tr");
   tr.id = `record${index}`;
 
   const td1 = document.createElement("td");
   td1.textContent = formatDateTime(record.metadata.createdAt);
+  td1.className = "td1";
 
   const td2 = document.createElement("td");
+  td2.className = "td2";
   td2.id = `duration${index}`;
   td2.textContent = formatTimeDuration(record.metadata.duration);
 
   const td3 = document.createElement("button");
+  td3.className = "td3";
   td3.id = `button${index}`;
   td3.textContent = "[Play]";
   td3.onclick = audioPlayingHandler.bind(
@@ -145,9 +174,17 @@ function createRecordRow(index, record) {
     record.metadata.duration
   ); // Binding click event to the audioPlayingHandler function
 
-  tr.append(td1, td2, td3);
-  RECORD_TABLE_ELEMENT.appendChild(tr);
-  // return tr;
+  const td4 = document.createElement("td");
+  td4.textContent = truncateAddress(record.owner);
+  td4.className = "td4";
+
+  getDomainName(record.owner).then((ownerEns) => {
+    td4.textContent = ownerEns || truncateAddress(record.owner);
+  });
+
+  tr.append(td1, td4, td2, td3);
+  // RECORD_TABLE_ELEMENT.appendChild(tr);
+  return tr;
 }
 
 function formatTimeDuration(durationInSeconds) {

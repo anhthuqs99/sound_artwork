@@ -4,14 +4,12 @@
   font-display: swap;
   font-weight: 300;
 }
-
 @font-face {
   font-family: 'Gotham Regular';
   src: url('./assets/GothamRegular/Gotham-Light_Web.woff');
   font-display: swap;
   font-weight: 400;
 }
-
 html, body {
   width: 100%;
   height: 100%;
@@ -25,15 +23,12 @@ html, body {
   --artworkMargin: calc(var(--artworkSize) * 64 / 1200);
   --rowPadding: calc(var(--artworkSize) * 32 / 1200);
 }
-
 p {
   margin: unset;
 }
-
 div, button, p, span {
   line-height: 170%;
 }
-
 button {
   border: unset;
   background: unset;
@@ -47,27 +42,22 @@ button {
     pointer-events: none;
   }
 }
-
 .hidden {
   display: none !important;
 }
-
 .flex-column {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
-
 .flex-row-reverse {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
 }
-
 .space-between {
   justify-content: space-between;
 }
-
 .container {
   width: 100%;
   height: 100%;
@@ -77,7 +67,6 @@ button {
   justify-content: center;
   font-size: var(--artworkFontSize);
 }
-
 .container >.page {
   width: calc(var(--artworkSize) - var(--artworkPadding) * 2);
   height: calc(var(--artworkSize) - var(--artworkPadding) * 2);
@@ -88,37 +77,30 @@ button {
   flex-direction: column;
   background: #ffffff;
 }
-
 .container >.page .duration {
   padding-right: var(--artworkPadding);
 }
-
 .container >.page .group {
   display: flex;
   justify-content: space-between;
   padding-bottom: var(--artworkPadding);
 }
-
 .container >.page .empty-data {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(var(--artworkSize) * 0.4);
 }
-
 .container .title {
   font-family: 'Gotham Regular';
   letter-spacing: 2.85px;
 }
-
 .container .title-margin {
   margin-bottom: calc(var(--artworkPadding) * 77 / 90);
 }
-
 .container .bottom-group {
   transform: translateY(calc(var(--artworkSize) * 23 / 1200));
 }
-
 .container >.page .records {
   overflow: scroll;
   -ms-overflow-style: none;  /* IE and Edge */
@@ -126,7 +108,6 @@ button {
 } ::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
-
 .container >.page .records >tr {
   display: flex;
   justify-content: space-between;
@@ -134,10 +115,32 @@ button {
   border-bottom: 1px solid #000000;
   padding: var(--rowPadding) 0;
 }
-
 .container >.page .records >tr >td,
 .container >.page .records >tr >button {
   padding: unset;
   height: 100%;
-  line-height: 100%;
+  line-height: 120%;
+}
+
+.container >.page .records >tr .td1 {
+  width: calc(var(--artworkSize) * 139 / 1200);
+  justify-content: center;
+}
+
+.container >.page .records >tr .td4 {
+  width: calc(var(--artworkSize) * 302 / 1200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container >.page .records >tr .td2 {
+  width: calc(var(--artworkSize) * 215 / 1200);
+  justify-content: center;
+  display: inline-flex;
+}
+
+.container >.page .records >tr .td3 {
+  width: calc(var(--artworkSize) * 89 / 1200);
+  justify-content: center;
 }
