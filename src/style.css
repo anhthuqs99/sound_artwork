@@ -139,29 +139,28 @@ button {
 .container >.page .records >tr >button {
   padding: unset;
   height: 100%;
-  line-height: 100%;
+  line-height: 120%;
 }
 
 .container >.page .records >tr .td1 {
-  min-width: calc(var(--artworkSize) * 139 / 1200);
-  display: inline-flex;
+  width: calc(var(--artworkSize) * 139 / 1200);
   justify-content: center;
 }
 
 .container >.page .records >tr .td4 {
-  min-width: calc(var(--artworkSize) * 302 / 1200);
-  display: inline-flex;
-  justify-content: center;
+  width: calc(var(--artworkSize) * 302 / 1200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .container >.page .records >tr .td2 {
-  min-width: calc(var(--artworkSize) * 215 / 1200);
-  display: inline-flex;
+  width: calc(var(--artworkSize) * 215 / 1200);
   justify-content: center;
+  display: inline-flex;
 }
 
 .container >.page .records >tr .td3 {
-  min-width: calc(var(--artworkSize) * 89 / 1200);
-  display: inline-flex;
+  width: calc(var(--artworkSize) * 89 / 1200);
   justify-content: center;
 }

@@ -15,7 +15,7 @@ npm install uglify-js -g
 ## Minified js files before serve
 
 ```bash
-uglifyjs src/web3.min.js src/sound.js src/script.js --module -o src/sound-piece.js
+uglifyjs src/web3.min.js src/ens.js src/buffer.js src/punycode.js src/sound.js src/script.js --module -o src/sound-piece.js
 ```
 
 ## Run test
