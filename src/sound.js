@@ -1,4 +1,4 @@
-const SOUND_CONTRACT_ADDRESS = "0x30F4D17baB0C815519c5d924ac4735be14eb25EC";
+const SOUND_CONTRACT_ADDRESS = "0x0D2747bb3650bEbB2E3a0d89346348f788855cB4";
 
 const NETWORKS = {
   mainnet: 1,
@@ -294,7 +294,7 @@ const SOUND_CONTRACT_ABI = [
   },
 ];
 
-const networkID = NETWORKS.mainnet;
+const networkID = NETWORKS.sepolia;
 var contract;
 var web3;
 
