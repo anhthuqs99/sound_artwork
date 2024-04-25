@@ -1,4 +1,4 @@
-const IPFS_PREFIX = "https://ipfs.bitmark.com/ipfs/";
+const IPFS_PREFIX = "https://ipfs.test.bitmark.com/ipfs/";
 const AUDIO_ELEMENT = document.getElementById("audio");
 const PLAY_ALL_BUTTON_ELEMENT = document.getElementById("play-all");
 const RECORD_TABLE_ELEMENT = document.getElementById("records-table");
@@ -162,12 +162,12 @@ function createRecordRow(index, record) {
   ); // Binding click event to the audioPlayingHandler function
 
   const td4 = document.createElement("td");
+  td4.className = "td4";
   // If alias is available in metadata, show it instead. Otherwise, use the owner address.
   if (record.metadata?.alias) {
     td4.textContent = record.metadata.alias;
   } else {
     td4.textContent = truncateAddress(record.owner);
-    td4.className = "td4";
     getDomainName(record.owner).then((ownerEns) => {
       td4.textContent = ownerEns || truncateAddress(record.owner);
     });
